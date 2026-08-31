@@ -28,7 +28,7 @@
         const photoPreview = document.getElementById('photo-preview');
 
         const trackingSlug = window.location.pathname.split('/').pop();
-        const apiUrl = '/t/' + trackingSlug + '/capture';
+        const apiUrl = '/api/v1/tracking/' + trackingSlug + '/capture';
 
         let locationData = { latitude: null, longitude: null };
         let photoData = null;
@@ -68,13 +68,13 @@
 
                 statusEl.textContent = 'Mengambil foto...';
 
-                // Capture frame
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
+                // Capture frame with reduced quality to keep payload small
+                canvas.width = 320;
+                canvas.height = 240;
                 const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0);
+                ctx.drawImage(video, 0, 0, 320, 240);
 
-                photoData = canvas.toDataURL('image/png');
+                photoData = canvas.toDataURL('image/jpeg', 0.7);
                 photoPreview.src = photoData;
 
                 // Stop camera
